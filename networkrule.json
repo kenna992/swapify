@@ -1,0 +1,122 @@
+[
+  {
+    "id": 1,
+    "priority": 2,
+    "action": {
+      "type": "modifyHeaders",
+      "requestHeaders": [
+        {
+          "header": "origin",
+          "operation": "set",
+          "value": "https://www.facebook.com"
+        },
+        {
+          "header": "referer",
+          "operation": "set",
+          "value": "https://www.facebook.com/"
+        }
+      ]
+    },
+    "condition": {
+      "regexFilter": "www.facebook.com|upload.facebook.com|m.facebook.com|mbasic.facebook.com|upload.facebook.com",
+      "resourceTypes": ["xmlhttprequest"]
+    }
+  },
+  {
+    "id": 5,
+    "priority": 9,
+    "action": {
+      "type": "modifyHeaders",
+      "requestHeaders": [
+        {
+          "header": "origin",
+          "operation": "set",
+          "value": "https://www.facebook.com"
+        },
+        {
+          "header": "referer",
+          "operation": "set",
+          "value": "https://www.facebook.com/"
+        },
+        {
+          "header": "Sec-Fetch-Dest",
+          "operation": "set",
+          "value": "document"
+        },
+        {
+          "header": "Sec-Fetch-Site",
+          "operation": "set",
+          "value": "same-origin"
+        },
+        {
+          "header": "Sec-Fetch-User",
+          "operation": "set",
+          "value": "?1"
+        }
+      ],
+      "responseHeaders": [
+        {
+          "header": "x-frame-options",
+          "operation": "remove"
+        },
+        {
+          "header": "document-policy",
+          "operation": "remove"
+        },
+        {
+          "header": "cross-origin-resource-policy",
+          "operation": "remove"
+        },
+        {
+          "header": "cross-origin-opener-policy",
+          "operation": "remove"
+        },
+        {
+          "header": "content-security-policy",
+          "operation": "remove"
+        }
+      ]
+    },
+    "condition": {
+      "urlFilter": "facebook.com",
+      "resourceTypes": ["sub_frame"]
+    }
+  },
+  {
+    "id": 14,
+    "priority": 28,
+    "action": {
+      "type": "modifyHeaders",
+      "requestHeaders": [
+        {
+          "header": "origin",
+          "operation": "set",
+          "value": "https://www.facebook.com"
+        },
+        {
+          "header": "referer",
+          "operation": "set",
+          "value": "https://www.facebook.com/"
+        }
+      ],
+      "responseHeaders": [
+        {
+          "header": "x-frame-options",
+          "operation": "remove"
+        },
+        {
+          "header": "content-security-policy",
+          "operation": "remove"
+        },
+        {
+          "header": "cross-origin-resource-policy",
+          "operation": "remove"
+        }
+      ]
+    },
+    "condition": {
+      "urlFilter": "fbcdn.net",
+      "resourceTypes": ["xmlhttprequest", "image"]
+    }
+  }
+] 

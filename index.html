@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <title>Swapify - Facebook Groep Monitor</title>
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <link rel="stylesheet" href="/assets/css/style-reset.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@100;200;300;400;500;700&display=swap');
+    body {
+      font-family: 'DM Sans', sans-serif;
+    }
+    /* Spinning animation for refresh button */
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    .animate-spin {
+      animation: spin 1s linear infinite;
+    }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <div class="sidebar">
+      <div class="logo-container">
+        <h1 class="logo-text">Swapify</h1>
+      </div>
+      
+      <nav>
+        <a href="#dashboard" class="nav-item active">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+          Overzicht
+        </a>
+        <a href="#settings" class="nav-item">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+          Instellingen
+        </a>
+      </nav>
+      
+      <!-- Sidebar Footer with CTA and Version -->
+      <div class="sidebar-footer">
+        <div class="feedback-cta">
+          <a href="mailto:info@swapify.nl" class="feedback-link">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+              <path d="M14 9h-4"></path>
+              <path d="M14 13h-6"></path>
+            </svg>
+            Feedback & ondersteuning
+          </a>
+        </div>
+      </div>
+    </div>
+    
+    <div class="main-content">
+      <!-- Scan Status Indicator -->
+      <div id="scan-indicator" class="scan-indicator" style="display: none;">
+        <div class="scan-indicator-content">
+          <div class="scan-indicator-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="3"></circle>
+              <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+            </svg>
+          </div>
+          <div class="scan-indicator-text">
+            <span class="scan-indicator-title">Facebook groepen scannen</span>
+            <span class="scan-indicator-details" id="scan-details">Zoeken naar nieuwe posts...</span>
+          </div>
+          <div class="scan-indicator-progress">
+            <div class="scan-progress-bar">
+              <div class="scan-progress-fill" id="scan-progress"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="page-header">
+        <h1 class="text-lg font-medium">Overzicht</h1>
+        <div class="header-actions">
+          <div class="subscription-badge-container">
+            <div id="subscription-badge" class="subscription-badge">
+              <svg id="subscription-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="3"></circle>
+                <path d="M12 1v6m0 6v6m11-7h-6m-6 0H1"></path>
+              </svg>
+              <span id="subscription-text" class="subscription-text">Laden...</span>
+            </div>
+          </div>
+          <div class="search-container">
+            <button id="search-button" class="search-button">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="8"></circle>
+                <path d="M21 21l-4.35-4.35"></path>
+              </svg>
+            </button>
+            <div id="search-dropdown" class="search-dropdown" style="display: none;">
+              <div class="search-input-container">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="11" cy="11" r="8"></circle>
+                  <path d="M21 21l-4.35-4.35"></path>
+                </svg>
+                <input type="text" id="search-input" class="search-input" placeholder="Zoek posts..." autocomplete="off">
+                <button id="search-clear" class="search-clear" style="display: none;" aria-label="Zoekopdracht wissen">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="notification-bell-container">
+            <button id="notification-bell" class="notification-bell">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+              </svg>
+              <span id="notification-badge" class="notification-badge" style="display: none;">0</span>
+            </button>
+            <div id="notification-dropdown" class="notification-dropdown flex flex-col bg-white border border-gray-200 rounded-lg shadow-xl w-96 max-h-[500px] z-[1000] mt-2" style="display: none;">
+              <div class="notification-header flex justify-between items-center px-4 py-3 border-b border-gray-100">
+                <h3 class="text-base font-semibold text-gray-900 m-0">Recente Meldingen</h3>
+                <button id="mark-all-read" class="btn-link text-sm text-blue-600 hover:text-blue-700 font-medium">Alles als gelezen markeren</button>
+              </div>
+              <div id="notification-list" class="notification-list max-h-[420px] overflow-y-auto">
+                <div class="notification-loading px-4 py-8 text-center text-gray-500">Meldingen laden...</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div id="dashboard-page">
+        
+        <!-- Stats Section -->
+        <div class="stats-grid mb-6">
+          <div class="stat-card clickable" id="matched-posts-card">
+            <div class="stat-icon matched-posts">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M8 3a2 2 0 0 0-2 2v14c0 1.105.895 2 2 2h8a2 2 0 0 0 2-2V9.414a2 2 0 0 0-.586-1.414L14.414 3.586A2 2 0 0 0 13 3H8Zm1.5 9.25c0-.414.336-.75.75-.75h1.5a.75.75 0 0 1 .75.75V17a.75.75 0 0 1-.75.75H10.25a.75.75 0 0 1-.75-.75v-4.75Zm4-1.5a.75.75 0 0 1 .75-.75H15a.75.75 0 0 1 .75.75V17a.75.75 0 0 1-.75.75h-.75A.75.75 0 0 1 13.5 17v-6.25Z" />
+                <path d="M7 7.25c0-.414.336-.75.75-.75h2.5a.75.75 0 0 1 0 1.5h-2.5A.75.75 0 0 1 7 7.25Z" />
+                <path d="M7 10.25c0-.414.336-.75.75-.75H9.5a.75.75 0 0 1 0 1.5H7.75A.75.75 0 0 1 7 10.25Z" />
+              </svg>
+            </div>
+            <div class="stat-content">
+              <div class="stat-number" id="stat-matched-posts">0</div>
+              <div class="stat-label">Gevonden Posts</div>
+            </div>
+          </div>
+          
+          <div class="stat-card">
+            <div class="stat-icon posts-scanned">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                <path fill-rule="evenodd" d="M10.5 3.75a6.75 6.75 0 1 0 0 13.5 6.75 6.75 0 0 0 0-13.5ZM2.25 10.5a8.25 8.25 0 1 1 14.59 5.28l4.69 4.69a.75.75 0 1 1-1.06 1.06l-4.69-4.69A8.25 8.25 0 0 1 2.25 10.5Z" clip-rule="evenodd" />
+              </svg>
+            </div>
+            <div class="stat-content">
+              <div class="stat-number" id="stat-posts-scanned">0</div>
+              <div class="stat-label">Gescande Posts</div>
+            </div>
+          </div>
+          
+          <div class="stat-card clickable" id="groups-monitoring-card">
+            <div class="stat-icon groups-monitoring">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M8.5 7a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0Z" />
+                <path d="M3.75 10.25a2.75 2.75 0 1 1 5.5 0 2.75 2.75 0 0 1-5.5 0Z" />
+                <path d="M14.75 9.5a2.25 2.25 0 1 1 4.5 0 2.25 2.25 0 0 1-4.5 0Z" />
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M3 18.5a5.5 5.5 0 0 1 5.5-5.5h7a5.5 5.5 0 0 1 5.5 5.5v1c0 .828-.672 1.5-1.5 1.5h-15c-.828 0-1.5-.672-1.5-1.5v-1Z" />
+              </svg>
+            </div>
+            <div class="stat-content">
+              <div class="stat-number" id="stat-groups-monitoring">0</div>
+              <div class="stat-label">Gemonitorde Groepen</div>
+            </div>
+          </div>
+          
+          <div class="stat-card clickable" id="keywords-monitoring-card">
+            <div class="stat-icon keywords-monitoring">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                <path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.006 5.404.434c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.434 2.082-5.005Z" clip-rule="evenodd" />
+              </svg>
+            </div>
+            <div class="stat-content">
+              <div class="stat-number" id="stat-keywords-monitoring">0</div>
+              <div class="stat-label">Gemonitorde Zoekwoorden</div>
+            </div>
+          </div>
+        </div>
+        
+          <h2 class="text-lg font-medium mb-4">Matches</h2>
+          
+          <!-- Lead tabs -->
+          <div class="tabs flex gap-2 mb-6">
+            <button class="tab tab-item px-4 py-2 text-sm font-medium border-b-2 cursor-pointer transition-colors active" data-filter="all">
+              Alles (<span id="all-count">0</span>)
+            </button>
+            <button class="tab tab-item px-4 py-2 text-sm font-medium border-b-2 cursor-pointer transition-colors" data-filter="new">
+              Nieuw (<span id="new-count">0</span>)
+            </button>
+            <!--<button class="tab tab-item px-4 py-2 text-sm font-medium border-b-2 cursor-pointer transition-colors" data-filter="seen">Gezien (<span id="seen-count">0</span>)</button>!-->
+            <button class="tab tab-item px-4 py-2 text-sm font-medium border-b-2 cursor-pointer transition-colors" data-filter="saved">
+              Opgeslagen (<span id="saved-count">0</span>)
+            </button>
+          </div>
+
+          <!-- Main content wrapper for leads (controlled by JavaScript) -->
+          <div id="main-content" style="display: none;">
+            <!-- Keyword Filters -->
+            <div class="keyword-filters-section" id="keyword-filters-section">
+              <div class="keyword-filters-container" id="keyword-filters-container">
+                <!-- Keyword filter pills will be dynamically added here -->
+              </div>
+              <button class="btn btn-secondary" id="clear-keyword-filters" style="display: none; margin-top: 0.5rem;">
+                Filters wissen
+              </button>
+            </div>
+
+            <div class="flex justify-between items-center mb-4">
+              <div class="flex gap-2">
+                <!--
+                <button class="btn btn-primary" id="edit-keywords-btn">
+                  Edit keywords
+                </button>
+                <button class="btn btn-secondary" id="edit-groups-btn">
+                  Edit groups
+                </button>
+                !-->
+              </div>
+              <div class="flex gap-2">
+                <!--
+                <button class="btn btn-secondary" id="refresh-leads-btn">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"></path></svg>
+                  Refresh
+                </button>
+                
+                <div class="sort-dropdown" style="position: relative;">
+                  <button class="btn btn-secondary" id="filter-sort-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg>
+                    Sorteren
+                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-left: 0.25rem;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                  </button>
+                  <div class="sort-dropdown-menu" id="sort-dropdown-menu" style="display: none;">
+                    <div class="sort-dropdown-item" data-sort="newest">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><polyline points="3 12 5 12 21 12"></polyline><polyline points="3 18 5 18 21 18"></polyline><polyline points="8 6 8 2"></polyline><polyline points="8 18 8 14"></polyline></svg>
+                      Nieuw naar oud
+                    </div>
+                    <div class="sort-dropdown-item" data-sort="oldest">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><polyline points="3 12 5 12 21 12"></polyline><polyline points="3 18 5 18 21 18"></polyline><polyline points="8 18 8 22"></polyline><polyline points="8 6 8 10"></polyline></svg>
+                      Oud naar nieuw
+                    </div>
+                  </div>
+                </div>
+                !-->
+              </div>
+            </div>
+            
+            <div id="leads-container">
+              <!-- This will be populated by JavaScript -->
+            </div>
+
+            <!-- Pagination -->
+            <div id="pagination-container" style="display: none;" class="flex justify-between items-center mt-4 pt-4 border-t">
+              <div>
+                <span id="pagination-info">Toont 1-10 van 25 posts</span>
+              </div>
+              <div class="flex gap-2">
+                <button class="btn btn-secondary" id="prev-page-btn" disabled>Vorige</button>
+                <button class="btn btn-secondary" id="next-page-btn">Volgende</button>
+              </div>
+            </div>
+          </div>
+          
+          <!-- No leads message (shown when no posts found) -->
+          <div id="no-leads-message" style="display: block;">
+            <div class="empty-state">
+              <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="8"></circle>
+                <path d="M21 21l-4.35-4.35"></path>
+              </svg>
+              <h3 id="no-leads-title">Nog geen posts gevonden</h3>
+              <p id="no-leads-description">Voeg zoekwoorden en Facebook groepen toe om te beginnen met monitoren.</p>
+
+              <!--
+              <div class="flex gap-2 mt-4">
+                <button class="btn btn-primary" id="setup-keywords-btn">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
+                  </svg>
+                  Zoekwoorden toevoegen
+                </button>
+                <button class="btn btn-secondary" id="setup-groups-btn">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="9" cy="7" r="4"></circle>
+                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                  </svg>
+                  Groepen toevoegen
+                </button>
+              </div>
+              !-->
+            </div>
+          </div>
+          
+          <!-- Facebook login message (shown when user is not signed into Facebook) -->
+          <div id="facebook-login-message" style="display: none;">
+            <div class="empty-state">
+              <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+              </svg>
+              <h3>Log in op Facebook om deze extensie te gebruiken</h3>
+              <p>Je moet aangemeld zijn bij Facebook om groepen te monitoren en posts te vinden.</p>
+              
+              <div class="mt-4">
+                <button class="btn btn-primary" id="facebook-login-btn">
+                  </svg>
+                  Inloggen op Facebook
+                </button>
+              </div>
+            </div>
+          </div>
+        
+      </div>
+      
+      <div id="settings-page" style="display: none;">
+        
+        <div class="tabs flex gap-2 mb-6" id="settings-tabs">
+          <button class="tab tab-item px-4 py-2 text-sm font-medium border-b-2 cursor-pointer transition-colors active" id="groups-tab">
+            Facebook groepen monitoren
+          </button>
+          <button class="tab tab-item px-4 py-2 text-sm font-medium border-b-2 cursor-pointer transition-colors" id="keywords-tab">
+            Zoekwoorden monitoren
+          </button>
+          <button class="tab tab-item px-4 py-2 text-sm font-medium border-b-2 cursor-pointer transition-colors" id="scan-settings-tab">
+            Scan-instellingen
+          </button>
+          <button class="tab tab-item px-4 py-2 text-sm font-medium border-b-2 cursor-pointer transition-colors" id="notifications-tab">
+            Notificaties
+          </button>
+        </div>
+        
+        <div id="groups-settings-content">
+          <div class="card">
+            <h3 class="font-medium mb-4">Facebook groepen</h3>
+            <div class="mt-4">
+              <div class="flex justify-between items-center mb-4">
+                <p id="group-count-display">Monitoren 0/0 groepen</p>
+                <button class="btn btn-secondary" id="refresh-groups-btn">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"></path></svg>
+                  Groepen verversen
+                </button>
+              </div>
+              
+              <!-- Groups table (shown when user is signed in) -->
+              <div id="groups-table-container">
+                <table class="table mt-4">
+                  <thead>
+                    <tr>
+                      <th class="sortable" data-sort="enabled">
+                        Uit/Aan
+                        <span class="sort-indicator">
+                          <svg class="sort-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                          </svg>
+                        </span>
+                      </th>
+                      <th class="sortable" data-sort="name">
+                        Groepsnaam
+                        <span class="sort-indicator">
+                          <svg class="sort-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                          </svg>
+                        </span>
+                      </th>
+                      <th class="sortable" data-sort="lastVisited">
+                        Laatst bezocht
+                        <span class="sort-indicator">
+                          <svg class="sort-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                          </svg>
+                        </span>
+                      </th>
+                      <th class="sortable" data-sort="scannedPosts">
+                        Gescande posts
+                        <span class="sort-indicator">
+                          <svg class="sort-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                          </svg>
+                        </span>
+                      </th>
+                      <th>Actie</th>
+                    </tr>
+                  </thead>
+                  <tbody id="groups-table-body">
+                    <!-- Group rows will be added here -->
+                  </tbody>
+                </table>
+              </div>
+              
+              <!-- Facebook login message for groups (shown when user is not signed into Facebook) -->
+              <div id="groups-facebook-login-message" style="display: none;">
+                <div class="empty-state">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+                  </svg>
+                  <h3>Log in op Facebook om je groepen te bekijken</h3>
+                  <p>Je moet aangemeld zijn bij Facebook om toegang te krijgen tot je groepen en ze te monitoren.</p>
+                  
+                  <div class="mt-4">
+                    <button class="btn btn-primary" id="groups-facebook-login-btn">
+                      Inloggen op Facebook
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div id="keyword-settings-content" style="display:none;">
+          <div class="card">
+            
+            
+            <div class="mb-8">
+              <h3 class="font-medium mb-4">Zoekwoorden om te monitoren</h3>
+              
+              <div id="keywords-container" class="grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 1rem;">
+                <!-- Keyword cards will be added here -->
+              </div>
+              
+                <div class="flex gap-2" style="max-width: 500px;">
+                  <input type="text" id="keyword-input" class="form-input" placeholder="Voeg positief zoekwoord toe..." style="flex: 1; margin: 0;">
+                  <button id="add-keyword-btn" class="btn btn-primary" style="white-space: nowrap;">
+                     Toevoegen
+                  </button>
+                </div>
+
+            </div>
+            
+            <div class="mb-8">
+              <h3 class="font-medium mb-4">Zoekwoorden om te negeren</h3>
+              <h4 class="font-medium mb-4">Leads worden niet getoond als posts deze zoekwoorden bevatten</h4>
+              
+              <div id="negative-keywords-container" class="grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 1rem;">
+                <!-- Negative keyword cards will be added here -->
+              </div>
+              
+
+                <div class="flex gap-2" style="max-width: 500px;">
+                  <input type="text" id="negative-keyword-input" class="form-input" placeholder="Voeg negatief zoekwoord toe..." style="flex: 1; margin: 0;">
+                  <button id="add-negative-keyword-btn" class="btn btn-primary" style="white-space: nowrap;">
+                    Toevoegen
+                  </button>
+                </div>
+
+            </div>
+
+            <div class="mb-4">
+              <h3 class="font-medium mb-4">Zoekwoordstrategie</h3>
+              
+              <div style="position: relative; margin-bottom: 2rem;">
+                <div class="keyword-strategy-buttons">
+                  <button class="btn btn-primary btn-selected" id="exact-match-btn">
+                  <div class="strategy-title">Exact zoekwoord</div>
+                  <div class="strategy-description">Alleen volledige woorden</div>
+                  </button>
+                  <button class="btn btn-primary" id="includes-keyword-btn">
+                  <div class="strategy-title">Tekst bevat zoekwoord</div>
+                  <div class="strategy-description">Ook gedeeltelijke woorden</div>
+                  </button>
+                </div>
+              </div>
+              
+              
+            </div>
+
+          </div>
+        </div>
+        
+        <div id="scan-settings-content" style="display:none;">
+          <div class="card">
+            <div class="mb-8">
+              <h3 class="font-medium mb-4">Scanfrequentie</h3>
+              <div class="flex gap-2 mt-2 mb-2">
+                <select id="scan-interval-select" class="form-input">
+                  <option value="60">Elke 1 uur</option>
+                  <option value="120" selected>Elke 2 uur</option>
+                  <option value="180">Elke 3 uur</option>
+                  <option value="240">Elke 4 uur</option>
+                  <option value="300">Elke 5 uur</option>
+                  <option value="360">Elke 6 uur</option>
+                </select>
+              </div>
+              <div class="next-scan-info" style="padding: 0.75rem; background-color: #f3f4f6; border-radius: 0.375rem; font-size: 0.875rem; color: #6b7280;">
+                <div class="flex items-center gap-2">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <polyline points="12,6 12,12 16,14"></polyline>
+                  </svg>
+                  <span>Volgende scan om <strong id="next-scan-time">--</strong></span>
+                </div>
+              </div>
+            </div>
+            <div class="mb-8" style="display: none;">
+              <h3 class="font-medium mb-4">Hoeveel posts scan je per sessie?</h3>
+              <div class="mb-4" style=" color: #6b7280;">
+                <div class="flex items-center gap-2">
+                  <span><strong>Let op:</strong> Te veel posts scannen kan leiden tot risico voor je account. Gebruik dit op eigen verantwoordelijkheid.</span>
+                </div>
+              </div>
+              <select class="form-input" id="posts-per-scan" disabled>
+                <option value="3">3 posts per groep/zoekwoord</option>
+                <option value="6">6 posts per groep/zoekwoord</option>
+                <option value="9">9 posts per groep/zoekwoord</option>
+                <option value="12">12 posts per groep/zoekwoord</option>
+                <option value="15">15 posts per groep/zoekwoord</option>
+                <option value="18" selected>18 posts per groep/zoekwoord</option>
+                <option value="21">21 posts per groep/zoekwoord</option>
+                <option value="24">24 posts per groep/zoekwoord</option>
+                <option value="27">27 posts per groep/zoekwoord</option>
+                <option value="30">30 posts per groep/zoekwoord</option>
+              </select>
+            </div>
+            <div class="mb-4">
+              <h3 class="font-medium mb-4">Handmatige scan</h3>
+              <p class="mb-4" id="last-scan-time">Laatste scan: Nooit</p>
+              <div class="action-buttons">
+                <button id="run-scan-now-btn" class="btn btn-primary">
+                  Scan nu starten
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div id="notifications-settings-content" style="display:none;">
+          <div class="card">
+            <div class="mb-4">
+              <h3 class="font-medium mb-4">Notificatie-instellingen</h3>
+              <div class="space-y-3">
+                <!-- Browser Notifications -->
+                <div class="alert-setting-item" style="display: flex; align-items: center; justify-content: space-between; padding: 0.75rem; background-color: #f9fafb; border-radius: 0.375rem;">
+                  <div style="display: flex; align-items: center; gap: 0.75rem;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0;">
+                      <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                      <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                    </svg>
+                    <div>
+                      <h4 class="font-medium" style="margin: 0 0 0.25rem 0;">Browsernotificaties</h4>
+                      <p style="margin: 0; font-size: 0.875rem; color: #6b7280;">Ontvang een melding wanneer nieuwe overeenkomende posts worden gevonden</p>
+                    </div>
+                  </div>
+                  <label class="switch">
+                    <input type="checkbox" id="notifications-enabled" checked>
+                    <span class="slider"></span>
+                  </label>
+                </div>
+                
+                <!-- Extension Badge -->
+                <div class="alert-setting-item" style="display: flex; align-items: center; justify-content: space-between; padding: 0.75rem; background-color: #f9fafb; border-radius: 0.375rem;">
+                  <div>
+                    <h4 class="font-medium" style="margin: 0 0 0.25rem 0;">Extensiebadge</h4>
+                    <p style="margin: 0; font-size: 0.875rem; color: #6b7280;">Toon het aantal nieuwe posts op het extensie-icoon</p>
+                  </div>
+                  <label class="switch">
+                    <input type="checkbox" id="badge-enabled" checked>
+                    <span class="slider"></span>
+                  </label>
+                </div>
+                
+                <!-- Email Notifications -->
+                <div class="alert-setting-item" style="display: flex; align-items: center; justify-content: space-between; padding: 0.75rem; background-color: #f9fafb; border-radius: 0.375rem; opacity: 0.6;">
+                  <div>
+                    <h4 class="font-medium" style="margin: 0 0 0.25rem 0;">E-mailnotificaties</h4>
+                    <p style="margin: 0; font-size: 0.875rem; color: #6b7280;">Ontvang een melding per e-mail wanneer nieuwe overeenkomende posts worden gevonden</p>
+                    <p style="margin: 0.25rem 0 0 0; font-size: 0.75rem; color: #9ca3af; font-style: italic;">Binnenkort beschikbaar!</p>
+                  </div>
+                  <label class="switch">
+                    <input type="checkbox" id="email-enabled" disabled>
+                    <span class="slider"></span>
+                  </label>
+                </div>
+                
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  
+  <!-- Setup Modal (Onboarding Flow Component) -->
+  <div id="setup-modal" class="onboarding-modal">
+    <div class="onboarding-container">
+      <div class="onboarding-progress-bar">
+        <div class="onboarding-progress-fill" id="setup-progress-fill"></div>
+      </div>
+
+      <div class="onboarding-content" id="setup-step-content">
+        <!-- Step 1 -->
+        <div class="setup-step onboarding-step" id="setup-step-1">
+          <div class="onboarding-step-content">
+            <h1 class="onboarding-title" id="setup-welcome-title">Welkom!</h1>
+            <p class="onboarding-subtitle" id="setup-subtitle">We gebruiken je Facebook profiel om groepen te monitoren en posts te vinden.</p>
+          </div>
+
+          <div id="setup-facebook-status" class="onboarding-status">
+            <div class="onboarding-loading">
+              <div class="loading-spinner onboarding-spinner"></div>
+              <div>
+                <p class="onboarding-loading-text">Je Facebook status wordt gecontroleerd...</p>
+                <p class="onboarding-loading-subtext">Dit duurt meestal minder dan 10 seconden.</p>
+              </div>
+            </div>
+          </div>
+
+          <div id="setup-connect-facebook" class="onboarding-facebook-not-connected" style="display:none;"></div>
+
+          <div class="setup-step-footer">
+            <button id="setup-step-1-btn" class="btn btn-primary setup-btn onboarding-button-primary" disabled>
+              Verbind Facebook
+            </button>
+          </div>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="setup-step onboarding-step" id="setup-step-2">
+          <div class="onboarding-step-content">
+            <h1 class="onboarding-title">Selecteer je Facebook groepen</h1>
+            <p class="onboarding-subtitle">Schakel de groepen in die wij mogen monitoren.</p>
+          </div>
+
+          <div class="onboarding-groups-container">
+            <div id="setup-groups-status" class="onboarding-status">
+              <div class="onboarding-loading">
+                <div class="loading-spinner onboarding-spinner"></div>
+                <div>
+                  <p class="onboarding-loading-text">Je Facebook groepen worden geladen...</p>
+                </div>
+              </div>
+            </div>
+            <div class="setup-groups-count" id="setup-groups-count"></div>
+            <div id="setup-groups-table-container" class="onboarding-groups-list" style="display:none;">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th class="sortable" data-sort="enabled">
+                      Aan/Uit
+                      <span class="sort-indicator">
+                        <svg class="sort-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                          <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                      </span>
+                    </th>
+                    <th class="sortable" data-sort="name">
+                      Naam
+                      <span class="sort-indicator">
+                        <svg class="sort-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                          <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                      </span>
+                    </th>
+                    <th class="sortable" data-sort="lastVisited">
+                      Laatst bezocht
+                      <span class="sort-indicator">
+                        <svg class="sort-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                          <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                      </span>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody id="setup-groups-table-body"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="setup-step-footer">
+            <button id="setup-step-2-btn" class="btn btn-primary setup-btn onboarding-button-primary" disabled>
+              Ga naar zoekwoorden
+            </button>
+          </div>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="setup-step onboarding-step" id="setup-step-3">
+          <div class="onboarding-step-content">
+            <h1 class="onboarding-title">Voeg zoekwoorden toe</h1>
+            <p class="onboarding-subtitle">Gebruik korte zoekwoorden zodat we relevante posts vinden.</p>
+          </div>
+
+          <div class="onboarding-keywords-section">
+            <div class="onboarding-keywords-input">
+              <input type="text" id="setup-keyword-input" class="onboarding-input" placeholder="bijv. Amsterdam of appartement" />
+              <button id="setup-add-keyword-btn" class="onboarding-button-secondary">
+                Toevoegen
+              </button>
+            </div>
+            <div id="setup-keywords-container" class="onboarding-keywords-list"></div>
+            <div id="setup-keywords-empty" class="onboarding-empty-state">
+              <p class="onboarding-empty-state-text">Nog geen zoekwoorden toegevoegd.</p>
+              <p class="onboarding-empty-state-subtext">Voeg er hierboven één toe.</p>
+            </div>
+          </div>
+
+          <div class="setup-step-footer">
+            <button id="setup-step-3-btn" class="btn btn-primary setup-btn onboarding-button-primary" disabled>
+              Ga naar afronding
+            </button>
+          </div>
+        </div>
+
+        <!-- Step 4 -->
+        <div class="setup-step onboarding-step thankyou-step" id="setup-step-4">
+          <div class="onboarding-thankyou-card">
+            <div class="onboarding-thankyou-bar"></div>
+            <div class="onboarding-thankyou-content">
+              <div class="onboarding-thankyou-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+              </div>
+              <h2 class="onboarding-thankyou-title">Bedankt!</h2>
+              <p class="onboarding-thankyou-subtitle">
+                Je bent klaar! We beginnen met het monitoren van je groepen en sturen je meldingen over matching posts.
+              </p>
+              <button id="setup-step-4-btn" class="onboarding-thankyou-btn" disabled>Beginnen</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Notification Container -->
+  <div id="notification-container" class="notification-container"></div>
+  
+  <script src="/site-index.js?v=1749080407"></script>
+</body>
+</html>

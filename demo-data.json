@@ -1,0 +1,118 @@
+{
+  "groups": [
+    {
+      "id": "demo_group_1",
+      "name": "Demo: Local Buy/Sell/Trade",
+      "url": "https://www.facebook.com/groups/demo1",
+      "lastVisited": "2025-07-10T10:30:00Z",
+      "enabled": false,
+      "scannedPosts": 6
+    },
+    {
+      "id": "demo_group_2", 
+      "name": "Demo: Community Services",
+      "url": "https://www.facebook.com/groups/demo2",
+      "lastVisited": "2025-07-09T15:45:00Z",
+      "enabled": false,
+      "scannedPosts": 9
+    },
+    {
+      "id": "demo_group_3",
+      "name": "Demo: Home Improvement Help",
+      "url": "https://www.facebook.com/groups/demo3",
+      "lastVisited": "2025-07-08T09:00:00Z",
+      "enabled": false,
+      "scannedPosts": 12
+    },
+    {
+      "id": "demo_group_4",
+      "name": "Demo: Neighborhood Watch",
+      "url": "https://www.facebook.com/groups/demo4",
+      "lastVisited": "2025-07-07T20:15:00Z",
+      "enabled": false,
+      "scannedPosts": 6
+    },
+    {
+      "id": "demo_group_5",
+      "name": "Demo: Local Contractors",
+      "url": "https://www.facebook.com/groups/demo5",
+      "lastVisited": "2025-07-06T08:00:00Z",
+      "enabled": false,
+      "scannedPosts": 9
+    }
+  ],
+  "posts": [
+    {
+      "id": "demo_post_1",
+      "content": "Looking for a reliable plumber in the area. Our kitchen sink is leaking and we need someone ASAP! Budget is around $200-300.",
+      "author": "Maria Rodriguez",
+      "createdAt": "2025-07-10T14:30:00Z",
+      "groupId": "demo_group_1",
+      "url": "https://www.facebook.com/groups/demo1/posts/123",
+      "isRead": false
+    },
+    {
+      "id": "demo_post_2",
+      "content": "Does anyone know a good electrician? We need to install some new outlets in our garage for our EV charger.",
+      "author": "James Chen",
+      "createdAt": "2025-07-10T12:00:00Z",
+      "groupId": "demo_group_2",
+      "url": "https://www.facebook.com/groups/demo2/posts/456",
+      "isRead": false
+    },
+    {
+      "id": "demo_post_3",
+      "content": "Our AC stopped working last night. Looking for HVAC repair recommendations! Need someone who can come out today if possible.",
+      "author": "Aisha Patel",
+      "createdAt": "2025-07-09T18:45:00Z",
+      "groupId": "demo_group_3",
+      "url": "https://www.facebook.com/groups/demo3/posts/789",
+      "isRead": true
+    },
+    {
+      "id": "demo_post_4",
+      "content": "Emergency! Water heater burst and flooded our basement. Need a plumber immediately! Will pay extra for emergency service.",
+      "author": "Robert Thompson",
+      "createdAt": "2025-07-10T16:00:00Z",
+      "groupId": "demo_group_1",
+      "url": "https://www.facebook.com/groups/demo1/posts/124",
+      "isRead": false
+    },
+    {
+      "id": "demo_post_5",
+      "content": "Looking for someone to help with roof repair. We have a few missing shingles after the storm last week.",
+      "author": "Emily Nguyen",
+      "createdAt": "2025-07-09T09:30:00Z",
+      "groupId": "demo_group_5",
+      "url": "https://www.facebook.com/groups/demo5/posts/501",
+      "isRead": false
+    },
+    {
+      "id": "demo_post_6",
+      "content": "Need recommendations for a contractor to renovate our bathroom. Looking for someone licensed and insured.",
+      "author": "Michael O'Brien",
+      "createdAt": "2025-07-08T15:20:00Z",
+      "groupId": "demo_group_5",
+      "url": "https://www.facebook.com/groups/demo5/posts/502",
+      "isRead": true
+    },
+    {
+      "id": "demo_post_7",
+      "content": "Our furnace is making strange noises. Does anyone know a good HVAC technician who won't overcharge?",
+      "author": "Sofia Martinez",
+      "createdAt": "2025-07-07T22:00:00Z",
+      "groupId": "demo_group_2",
+      "url": "https://www.facebook.com/groups/demo2/posts/457",
+      "isRead": false
+    },
+    {
+      "id": "demo_post_8",
+      "content": "Selling: Used lawn mower in great condition. Works perfectly, just upgraded to a newer model. $150 OBO",
+      "author": "David Kim",
+      "createdAt": "2025-07-10T11:00:00Z",
+      "groupId": "demo_group_1",
+      "url": "https://www.facebook.com/groups/demo1/posts/125",
+      "isRead": false
+    }
+  ]
+}
